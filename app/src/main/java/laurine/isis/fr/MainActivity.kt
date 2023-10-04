@@ -36,6 +36,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import laurine.isis.fr.ui.theme.MyApplicationTheme
 
@@ -48,26 +49,49 @@ class MainActivity : ComponentActivity() {
         setContent {
             val windowSizeClass = calculateWindowSizeClass(this)
             val navController = rememberNavController()
+            val viewmodel : MainViewModel by viewModels()
 
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = "image") {
-                        composable("image") {
-                            Screen(windowSizeClass, navController)
-                        }
-                        composable("film") {
-                            Film()
-                        }
-                    }
+
+                    Greeting("Hobbit", viewmodel)
+                    //NavHost(
+                    // navController = navController,
+                    // startDestination = "image") {
+                    //  composable("image") {
+                    //      Screen(windowSizeClass, navController)
+                    //  }
+                    //  composable("film") {
+                      //      Film()
+                    //   }
+                    //}
                 }
             }
         }
     }
 }
 
+@Composable
+fun Greeting(name: String, viewModel: MainViewModel){
+    val movies by viewModel.movies.collectAsState()
+
+    if (movies.isEmpty()) viewModel.searchMovies(name)
+
+    LazyColumn{
+        items(movies){
+            movie -> Text(text= movie.original_title)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefautPreview(){
+    MyApplicationTheme {
+        Greeting("Android", MainViewModel())
+    }
+}
 
 @Composable
 fun Texte(){
