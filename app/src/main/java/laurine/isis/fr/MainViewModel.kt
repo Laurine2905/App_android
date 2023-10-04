@@ -11,6 +11,7 @@ import retrofit2.create
 class MainViewModel : ViewModel() {
 
     val movies = MutableStateFlow<List<Movie>>(listOf())
+    val series = MutableStateFlow<List<Serie>>(listOf())
     val apikey ="2ab74ba6ba3af991e8495015b7df64d5"
 
     val service = Retrofit.Builder()
@@ -28,6 +29,12 @@ class MainViewModel : ViewModel() {
     fun filmsTendance(){
         viewModelScope.launch {
             movies.value = service.derniersFilms(apikey).results
+        }
+    }
+
+    fun seriesTendance(){
+        viewModelScope.launch {
+            series.value = service.dernieresSeries(apikey).results
         }
     }
 
