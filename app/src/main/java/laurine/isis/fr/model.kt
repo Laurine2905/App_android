@@ -1,6 +1,6 @@
 package laurine.isis.fr
 
-data class TmdbResult(
+data class Movies(
     val page: Int,
     val results: List<Movie>,
     val total_pages: Int,

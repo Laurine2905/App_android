@@ -49,23 +49,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             val windowSizeClass = calculateWindowSizeClass(this)
             val navController = rememberNavController()
-            val viewmodel : MainViewModel by viewModels()
+            val viewModel : MainViewModel by viewModels()
 
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
 
-                    Greeting("Hobbit", viewmodel)
-                    //NavHost(
-                    // navController = navController,
-                    // startDestination = "image") {
-                    //  composable("image") {
-                    //      Screen(windowSizeClass, navController)
-                    //  }
-                    //  composable("film") {
-                      //      Film()
-                    //   }
-                    //}
+                    NavHost(
+                     navController = navController,
+                     startDestination = "image") {
+                      composable("image") {
+                          Screen(windowSizeClass, navController)
+                      }
+                      composable("film") {
+                            Film(windowSizeClass, navController,viewModel)
+                      }
+                    }
                 }
             }
         }
@@ -73,7 +72,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, viewModel: MainViewModel){
+fun Search(name: String, viewModel: MainViewModel){
     val movies by viewModel.movies.collectAsState()
 
     if (movies.isEmpty()) viewModel.searchMovies(name)
@@ -89,7 +88,7 @@ fun Greeting(name: String, viewModel: MainViewModel){
 @Composable
 fun DefautPreview(){
     MyApplicationTheme {
-        Greeting("Android", MainViewModel())
+        Search("Android", MainViewModel())
     }
 }
 

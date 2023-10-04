@@ -24,4 +24,11 @@ class MainViewModel : ViewModel() {
             movies.value = service.getFilmsParMotCle(apikey, motcle).results
         }
     }
+
+    fun filmsTendance(){
+        viewModelScope.launch {
+            movies.value = service.derniersFilms(apikey).results
+        }
+    }
+
 }
