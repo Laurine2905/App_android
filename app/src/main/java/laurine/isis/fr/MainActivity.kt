@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
                           Screen(windowSizeClass, navController)
                       }
                       composable("film") {
-                            Serie(windowSizeClass, navController,viewModel)
+                            Persons(windowSizeClass, navController,viewModel)
                       }
                     }
                 }

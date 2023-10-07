@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun Person(classes: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
+fun Persons(classes: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
     val classeHauteur = classes.heightSizeClass
-    val movies by viewModel.movies.collectAsState()
+    val persons by viewModel.persons.collectAsState()
     LaunchedEffect(true) {
-        viewModel.filmsTendance()
+        viewModel.acteursTendance()
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         LazyVerticalGrid(
@@ -29,17 +29,17 @@ fun Person(classes: WindowSizeClass, navController: NavController, viewModel: Ma
                 .fillMaxSize()
                 .padding(bottom = 5.dp),
             columns = GridCells.Fixed(2)
-        ) { items(movies) { movie -> CardFilm(movie, navController) } }
+        ) { items(persons) { person -> CardPerson(person, navController) } }
     }
 }
 
 @Composable
-fun CardPerson(film: Movie, navController: NavController) {
+fun CardPerson(person: Person, navController: NavController) {
     MyCard(
-        route = "filmDetail/" + film.id,
-        chemin_img = film.poster_path,
-        titre = film.title,
-        date_sortie = film.release_date,
+        route = "filmDetail/" + person.id,
+        chemin_img = person.profile_path,
+        titre = person.name,
+        date_sortie = "",
         navController = navController
     )
 }

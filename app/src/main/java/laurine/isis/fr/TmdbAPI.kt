@@ -13,4 +13,7 @@ interface TmdbAPI {
     @GET("trending/tv/week")
     suspend fun dernieresSeries(@Query("api_key") apikey: String): Series
 
+    @GET("trending/person/week")
+    suspend fun dernieresPersons(@Query("api_key") apikey: String): Persons
+
 }

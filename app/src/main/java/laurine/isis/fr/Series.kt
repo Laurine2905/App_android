@@ -36,7 +36,7 @@ fun Serie(classes: WindowSizeClass, navController: NavController, viewModel: Mai
 @Composable
 fun CardSerie(serie: Serie, navController: NavController) {
     MyCard(
-        route = "filmDetail/" + serie.id,
+        route = "serieDetail/" + serie.id,
         chemin_img = serie.poster_path,
         titre = serie.name,
         date_sortie = serie.first_air_date,
