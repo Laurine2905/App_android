@@ -1,3 +1,4 @@
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,12 +29,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import laurine.isis.fr.MainViewModel
+import androidx.activity.viewModels
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.navigation.NavController
+import laurine.isis.fr.Film
+import laurine.isis.fr.Persons
+import laurine.isis.fr.Serie
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomAppBarExample() {
+fun BottomAppBarExample(windowSizeClass: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
     var value by remember { mutableStateOf("films") }
-
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -70,15 +80,12 @@ fun BottomAppBarExample() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = when (value) {
-                        "films" -> "Film"
-                        "series" -> "Série"
-                        "acteurs" -> "Acteur"
+                 when (value) {
+                        "films" -> Film (windowSizeClass, navController, viewModel)
+                        "series" -> Serie (windowSizeClass, navController, viewModel)
+                        "acteurs" -> Persons (windowSizeClass, navController, viewModel)
                         else -> ""
-                    },
-                    style = LocalTextStyle.current.copy(color = LocalContentColor.current)
-                )
+                    }
             }
         }
     }

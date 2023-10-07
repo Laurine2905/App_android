@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                           Screen(windowSizeClass, navController)
                       }
                       composable("film") {
-                          BottomAppBarExample()
+                          BottomAppBarExample(windowSizeClass, navController, viewModel)
                       }
                     }
                 }
