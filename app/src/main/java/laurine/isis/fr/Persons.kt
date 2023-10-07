@@ -35,11 +35,10 @@ fun Persons(classes: WindowSizeClass, navController: NavController, viewModel: M
 
 @Composable
 fun CardPerson(person: Person, navController: NavController) {
-    MyCard(
-        route = "filmDetail/" + person.id,
+    MyCardPersons(
+        route = "acteurDetail/" + person.id,
         chemin_img = person.profile_path,
         titre = person.name,
-        date_sortie = "",
         navController = navController
     )
 }
