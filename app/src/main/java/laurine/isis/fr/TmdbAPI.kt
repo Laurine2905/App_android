@@ -7,6 +7,12 @@ interface TmdbAPI {
     @GET("search/movie")
     suspend fun getFilmsParMotCle(@Query("api_key") apikey : String, @Query("query")motcle: String) : Movies
 
+    @GET("search/tv")
+    suspend fun getSeriesParMotCle(@Query("api_key") apikey : String, @Query("query")motcle: String) : Series
+
+    @GET("search/person")
+    suspend fun getPersonsParMotCle(@Query("api_key") apikey : String, @Query("query")motcle: String) : Persons
+
     @GET("trending/movie/week")
     suspend fun derniersFilms(@Query("api_key") apikey: String): Movies
 

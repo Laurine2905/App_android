@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                      navController = navController,
                      startDestination = "image") {
                       composable("image") {
-                          Screen(windowSizeClass, navController)
+                          Screen(windowSizeClass , navController)
                       }
                       composable("film") {
                           BottomAppBarExample(windowSizeClass, navController, viewModel)
@@ -72,24 +72,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Search(name: String, viewModel: MainViewModel){
-    val movies by viewModel.movies.collectAsState()
 
-    if (movies.isEmpty()) viewModel.searchMovies(name)
-
-    LazyColumn{
-        items(movies){
-            movie -> Text(text= movie.original_title)
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefautPreview(){
     MyApplicationTheme {
-        Search("Android", MainViewModel())
+        SearchSeries("Android", MainViewModel())
     }
 }
 

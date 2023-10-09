@@ -27,6 +27,18 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun searchSeries(motcle: String){
+        viewModelScope.launch {
+            series.value = service.getSeriesParMotCle(apikey, motcle).results
+        }
+    }
+
+    fun searchPersons(motcle: String){
+        viewModelScope.launch {
+            persons.value = service.getPersonsParMotCle(apikey, motcle).results
+        }
+    }
+
     fun filmsTendance(){
         viewModelScope.launch {
             movies.value = service.derniersFilms(apikey).results
