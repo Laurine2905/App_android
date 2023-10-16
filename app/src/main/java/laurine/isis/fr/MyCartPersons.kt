@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -20,7 +21,7 @@ import coil.compose.rememberImagePainter
 @Composable
 fun MyCardPersons(
     route: String,
-    chemin_img: String,
+    chemin_img: String?,
     titre: String,
     navController: NavController
 ) {
@@ -34,10 +35,13 @@ fun MyCardPersons(
             modifier = Modifier.padding(16.dp))
         {
             androidx.compose.foundation.Image(
-                painter = rememberImagePainter(
+
+                painter = if(chemin_img != null) rememberImagePainter(
+
                     data = "https://image.tmdb.org/t/p/w500$chemin_img",
 
-                    ),
+                    )
+                else painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = titre,
                 modifier = Modifier
                     .size(180.dp)

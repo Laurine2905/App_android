@@ -1,4 +1,5 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -40,6 +42,7 @@ import laurine.isis.fr.Persons
 import laurine.isis.fr.Serie
 import androidx.compose.material3.TextField
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import laurine.isis.fr.R
@@ -47,7 +50,11 @@ import laurine.isis.fr.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomAppBarExample(windowSizeClass: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
+fun BottomAppBarExample(
+    windowSizeClass: WindowSizeClass,
+    navController: NavController,
+    viewModel: MainViewModel
+) {
     var value by remember { mutableStateOf("films") }
     var searchVisible by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
@@ -58,21 +65,16 @@ fun BottomAppBarExample(windowSizeClass: WindowSizeClass, navController: NavCont
             TopAppBar(
                 title = {
                     if (searchVisible) {
-
                         // Champ de texte pour la recherche
                         TextField(
                             value = searchQuery,
                             onValueChange = {
                                 searchQuery = it
                                 // Appeler votre fonction de recherche ici avec la query
-                                if(value=="series") {
-                                    viewModel.searchSeries(searchQuery)
-                                }
-                                if(value=="films") {
-                                    viewModel.searchMovies(searchQuery)
-                                }
-                                if(value=="acteurs") {
-                                    viewModel.searchPersons(searchQuery)
+                                when (value) {
+                                    "series" -> viewModel.searchSeries(searchQuery)
+                                    "films" -> viewModel.searchMovies(searchQuery)
+                                    "acteurs" -> viewModel.searchPersons(searchQuery)
                                 }
                             },
                             placeholder = { Text("Rechercher") },
@@ -101,30 +103,62 @@ fun BottomAppBarExample(windowSizeClass: WindowSizeClass, navController: NavCont
             )
         },
         bottomBar = {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary, // Fond violet
+            ) {
             // BottomAppBar avec les boutons
             BottomAppBar(
                 contentPadding = PaddingValues(top = 1.dp, bottom = 1.dp),
-                contentColor = LocalContentColor.current,
-            ) {
-                IconButton(onClick = { value = "films" }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_movie_24),
-                        contentDescription = "profil"
-                    )
+                contentColor = LocalContentColor.current) {
+                // Bouton Films
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    IconButton(onClick = { value = "films" }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_movie_24),
+                            contentDescription = "Films",
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                    Text(text = "Films", color = Color.Black) // Texte blanc
                 }
-                IconButton(onClick = { value = "series" }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_tv_24),
-                        contentDescription = "profil"
-                    )
+
+                // Bouton Séries
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    IconButton(onClick = { value = "series" }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_tv_24),
+                            contentDescription = "Séries",
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                    Text(text = "Séries", color = Color.Black) // Texte blanc
                 }
-                IconButton(onClick = { value = "acteurs" }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_person_24),
-                        contentDescription = "profil"
-                    )
+
+                // Bouton Acteurs
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    IconButton(onClick = { value = "acteurs" }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_person_24),
+                            contentDescription = "Acteurs",
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                    Text(text = "Acteurs", color = Color.Black) // Texte blanc
                 }
-            }
+            }}
         }
     ) { innerPadding ->
         Surface(

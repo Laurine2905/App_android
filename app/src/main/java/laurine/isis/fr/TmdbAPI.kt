@@ -1,6 +1,7 @@
 package laurine.isis.fr
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbAPI {
@@ -22,4 +23,6 @@ interface TmdbAPI {
     @GET("trending/person/week")
     suspend fun dernieresPersons(@Query("api_key") apikey: String): Persons
 
+    @GET("movie/{movie_id}?append_to_response=credits")
+    suspend fun getFilmDetails(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String ): FilmDetail
 }

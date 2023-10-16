@@ -9,7 +9,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(modifier = Modifier.fillMaxSize()) {
 
                     NavHost(
                      navController = navController,
@@ -63,7 +65,7 @@ class MainActivity : ComponentActivity() {
                           Screen(windowSizeClass , navController)
                       }
                       composable("film") {
-                          BottomAppBarExample(windowSizeClass, navController, viewModel)
+                        BottomAppBarExample(windowSizeClass, navController, viewModel)
                       }
                     }
                 }
@@ -158,28 +160,34 @@ fun Screen(windowClass: WindowSizeClass, navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
-                    .fillMaxSize()// Remplit tout
-                    .padding(10.dp)
+                    .fillMaxSize()
+                    .padding(16.dp) // Ajoute des marges à l'intérieur du conteneur
             ) {
                 photoProfil()
+                Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                 Texte()
+                Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                 Lien()
+                Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                 bouton(navController)
-
             }
         }
         else -> {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ){
-                Column (){
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp) // Ajoute des marges à l'intérieur du conteneur
+            ) {
+                Column() {
                     photoProfil()
-
                 }
-                Column () {
+                Column() {
                     Texte()
+                    Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                     Lien()
+                    Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                     bouton(navController)
                 }
             }
