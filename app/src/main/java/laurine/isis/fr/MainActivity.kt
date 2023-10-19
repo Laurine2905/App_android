@@ -73,9 +73,17 @@ class MainActivity : ComponentActivity() {
                         composable("filmDetail/{filmId}") { backStackEntry ->
                             val filmId =
                                 backStackEntry.arguments?.getString("filmId")?.toIntOrNull()
-                            val film = viewModel.movies.value.firstOrNull { it.id == filmId }
-                            if (film != null) {
-                                FilmDetailScreen(film)
+
+                            // Vérifiez si filmId n'est pas nul
+                            if (filmId != null) {
+                                // Appelez votre fonction dans le ViewModel pour obtenir les détails du film par son ID
+                                viewModel.filmDetailbyID(filmId)
+
+                                // Observez les détails du film à partir de votre ViewModel
+                                val filmDetail by viewModel.detailfilm.collectAsState()
+
+                                // Affichez les détails du film dans votre interface utilisateur
+                                FilmDetailScreen(filmDetail)
                             }
                         }
                     }
@@ -84,14 +92,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
-    @Preview(showBackground = true)
-    @Composable
-    fun DefautPreview() {
-        MyApplicationTheme {
-            SearchSeries("Android", MainViewModel())
-        }
-    }
 
     @Composable
     fun Texte() {
@@ -209,3 +209,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+

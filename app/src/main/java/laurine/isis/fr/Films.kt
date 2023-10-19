@@ -48,7 +48,6 @@ fun Film(classes: WindowSizeClass, navController: NavController, viewModel: Main
 @Composable
 fun CardFilm(film: Movie, navController: NavController) {
 
-        val route = "filmDetail/" + film.id
     val chemin_img = film.poster_path
     val titre = film.title
     val date_sortie = film.release_date

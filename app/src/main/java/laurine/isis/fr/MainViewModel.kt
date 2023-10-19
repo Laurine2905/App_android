@@ -59,7 +59,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun filmDetail(id : Int){
+    fun filmDetailbyID(id : Int){
         viewModelScope.launch {
             detailfilm.value = service.getFilmDetails(id, apikey)
         }
