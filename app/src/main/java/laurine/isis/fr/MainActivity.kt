@@ -1,6 +1,7 @@
 package laurine.isis.fr
 
 import BottomAppBarExample
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -45,6 +46,7 @@ import laurine.isis.fr.ui.theme.MyApplicationTheme
 
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("StateFlowValueCalledInComposition")
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,143 +54,156 @@ class MainActivity : ComponentActivity() {
         setContent {
             val windowSizeClass = calculateWindowSizeClass(this)
             val navController = rememberNavController()
-            val viewModel : MainViewModel by viewModels()
+            val viewModel: MainViewModel by viewModels()
 
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize()) {
 
                     NavHost(
-                     navController = navController,
-                     startDestination = "image") {
-                      composable("image") {
-                          Screen(windowSizeClass , navController)
-                      }
-                      composable("film") {
-                        BottomAppBarExample(windowSizeClass, navController, viewModel)
-                      }
+                        navController = navController,
+                        startDestination = "image"
+                    ) {
+                        composable("image") {
+                            Screen(windowSizeClass, navController)
+                        }
+                        composable("film") {
+                            BottomAppBarExample(windowSizeClass, navController, viewModel)
+                        }
+                        composable("filmDetail/{filmId}") { backStackEntry ->
+                            val filmId =
+                                backStackEntry.arguments?.getString("filmId")?.toIntOrNull()
+                            val film = viewModel.movies.value.firstOrNull { it.id == filmId }
+                            if (film != null) {
+                                FilmDetailScreen(film)
+                            }
+                        }
                     }
                 }
             }
         }
     }
-}
 
 
-
-@Preview(showBackground = true)
-@Composable
-fun DefautPreview(){
-    MyApplicationTheme {
-        SearchSeries("Android", MainViewModel())
-    }
-}
-
-@Composable
-fun Texte(){
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = "Etudiante en FIE4",
-            textAlign = TextAlign.Center,
-            fontStyle = FontStyle.Italic,
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Text(
-            text = "Ecole d'ingénieur ISIS",
-            textAlign = TextAlign.Center,
-            fontStyle = FontStyle.Italic,
-            style = MaterialTheme.typography.bodyLarge
-        )
-    }
-}
-
-
-@Composable
-fun Lien(){
-    Column(){
-        Row(Modifier.padding(top = 20.dp)) {
-            Image(
-                painterResource(id = R.drawable.mail),
-                contentDescription = "Mail",
-                Modifier.size(30.dp)
-            )
-            Text(text = "laurine.rat@outlook.fr")
+    @Preview(showBackground = true)
+    @Composable
+    fun DefautPreview() {
+        MyApplicationTheme {
+            SearchSeries("Android", MainViewModel())
         }
-        Row() {
-            Image(
-                painterResource(id = R.drawable.linkedin),
-                contentDescription = "Linkedin",
-                Modifier.size(30.dp)
-            )
-            Text(text = "www.linkedin.com")
-        }}
-}
-
-@Composable
-fun photoProfil(){
-    Column(horizontalAlignment = Alignment.CenterHorizontally){
-        Image(
-            painter = painterResource(id = R.drawable.sans_titre),
-            contentDescription = "profil",
-            contentScale = ContentScale.Crop, // redimensionnement de l'image
-            modifier = Modifier
-                .size(250.dp)
-                .clip(CircleShape) //cercle // taille l'espace disponible
-        )
-        Text(text = "Laurine Rat",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(10.dp))
-    }}
-
-@Composable
-fun bouton(navController: NavController) {
-    androidx.compose.material3.Button(
-        onClick = {
-            navController.navigate("film") // naviguer vers l'acceuil de l'appli (affichage des films par défault)
-        }
-    ) {
-        Text(text = "Démarrer")
     }
-}
 
-@Composable
-fun Screen(windowClass: WindowSizeClass, navController: NavController) {
-    when (windowClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp) // Ajoute des marges à l'intérieur du conteneur
-            ) {
-                photoProfil()
-                Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
-                Texte()
-                Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
-                Lien()
-                Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
-                bouton(navController)
+    @Composable
+    fun Texte() {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Etudiante en FIE4",
+                textAlign = TextAlign.Center,
+                fontStyle = FontStyle.Italic,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = "Ecole d'ingénieur ISIS",
+                textAlign = TextAlign.Center,
+                fontStyle = FontStyle.Italic,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
+
+
+    @Composable
+    fun Lien() {
+        Column() {
+            Row(Modifier.padding(top = 20.dp)) {
+                Image(
+                    painterResource(id = R.drawable.mail),
+                    contentDescription = "Mail",
+                    Modifier.size(30.dp)
+                )
+                Text(text = "laurine.rat@outlook.fr")
+            }
+            Row() {
+                Image(
+                    painterResource(id = R.drawable.linkedin),
+                    contentDescription = "Linkedin",
+                    Modifier.size(30.dp)
+                )
+                Text(text = "www.linkedin.com")
             }
         }
-        else -> {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
+    }
+
+    @Composable
+    fun photoProfil() {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(
+                painter = painterResource(id = R.drawable.sans_titre),
+                contentDescription = "profil",
+                contentScale = ContentScale.Crop, // redimensionnement de l'image
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp) // Ajoute des marges à l'intérieur du conteneur
-            ) {
-                Column() {
+                    .size(250.dp)
+                    .clip(CircleShape) //cercle // taille l'espace disponible
+            )
+            Text(
+                text = "Laurine Rat",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(10.dp)
+            )
+        }
+    }
+
+    @Composable
+    fun bouton(navController: NavController) {
+        androidx.compose.material3.Button(
+            onClick = {
+                navController.navigate("film") // naviguer vers l'acceuil de l'appli (affichage des films par défault)
+            }
+        ) {
+            Text(text = "Démarrer")
+        }
+    }
+
+    @Composable
+    fun Screen(windowClass: WindowSizeClass, navController: NavController) {
+        when (windowClass.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp) // Ajoute des marges à l'intérieur du conteneur
+                ) {
                     photoProfil()
-                }
-                Column() {
+                    Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                     Texte()
                     Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                     Lien()
                     Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
                     bouton(navController)
+                }
+            }
+
+            else -> {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp) // Ajoute des marges à l'intérieur du conteneur
+                ) {
+                    Column() {
+                        photoProfil()
+                    }
+                    Column() {
+                        Texte()
+                        Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
+                        Lien()
+                        Spacer(modifier = Modifier.height(16.dp)) // Ajoute un espace vertical
+                        bouton(navController)
+                    }
                 }
             }
         }
