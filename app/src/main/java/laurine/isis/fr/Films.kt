@@ -47,17 +47,19 @@ fun Film(windowClass: WindowSizeClass, navController: NavController, viewModel: 
                         .padding(bottom = 5.dp),
                     columns = GridCells.Fixed(2)
                 ) { items(movies) { movie -> CardFilm(movie, navController) } }
-            }}
-            else -> {
-                LazyRow(
-                    contentPadding = PaddingValues(8.dp),
-                    modifier = Modifier.fillMaxHeight()
-                ) {
-                    items(movies) { movie -> CardFilm(movie, navController) }
-                }
+            }
+        }
+
+        else -> {
+            LazyRow(
+                contentPadding = PaddingValues(8.dp),
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                items(movies) { movie -> CardFilm(movie, navController) }
             }
         }
     }
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)

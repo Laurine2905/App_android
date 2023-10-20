@@ -1,19 +1,24 @@
 package laurine.isis.fr
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,19 +34,31 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 
 @Composable
-fun Persons(classes: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
-    val classeHauteur = classes.heightSizeClass
+fun Persons(windowClass: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
     val persons by viewModel.persons.collectAsState()
     LaunchedEffect(true) {
         viewModel.acteursTendance()
     }
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 5.dp),
-            columns = GridCells.Fixed(2)
-        ) { items(persons) { person -> CardPerson(person, navController) } }
+    when (windowClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 5.dp),
+                    columns = GridCells.Fixed(2)
+                ) { items(persons) { person -> CardPerson(person, navController) } }
+            }
+        }
+
+        else -> {
+            LazyRow(
+                contentPadding = PaddingValues(8.dp),
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                items(persons) { person -> CardPerson(person, navController) }
+            }
+        }
     }
 }
 
@@ -72,7 +89,7 @@ fun CardPerson(person: Person, navController: NavController) {
                 else painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = person.name,
                 modifier = Modifier
-                    .size(180.dp)
+                    .size(100.dp)
                     .align(Alignment.CenterHorizontally)
             )
             Text(
