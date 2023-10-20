@@ -95,13 +95,31 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel) {
         }
         Text(text = "Synopsis :", fontWeight = FontWeight.Bold, style = typography.h4)
         Text(text = "${filmDetail.overview}", textAlign = TextAlign.Justify)
-        /*Text(text = "Têtes d'affiche :", fontWeight = FontWeight.Bold, style = typography.h4)
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(8.dp)
+
+        Text(
+            text = "Têtes d'affiche",
+            fontWeight = FontWeight.Bold,
+            style = typography.h4,
+            modifier = Modifier.padding(8.dp)
+        )
+        LazyRow(
+            contentPadding = PaddingValues(8.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
-            items(filmDetail.credits.cast) { actor ->
+            items(filmDetail.credits.cast.take(10)) { actor ->
                 CastCard(actor = actor)
+            }
+        }
+
+       /* if (filmDetail.credits.cast.isNotEmpty()) {
+            Text(text = "Têtes d'affiche :", fontWeight = FontWeight.Bold, style = typography.h4)
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(8.dp)
+            ) {
+                items(filmDetail.credits.cast.take(10)) { actor ->
+                    CastCard(actor = actor)
+                }
             }
         }*/
 

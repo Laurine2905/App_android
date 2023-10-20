@@ -39,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import laurine.isis.fr.CastCard
 import laurine.isis.fr.FilmDetail
 import laurine.isis.fr.MainViewModel
 import laurine.isis.fr.SerieDetails
@@ -97,5 +98,20 @@ fun SerieDetailScreen(serieDetail: SerieDetails, viewModel: MainViewModel) {
         }
         Text(text = "Synopsis :", fontWeight = FontWeight.Bold, style = typography.h4)
         Text(text = serieDetail.overview, textAlign = TextAlign.Justify)
+        Text(
+            text = "Têtes d'affiche",
+            fontWeight = FontWeight.Bold,
+            style = typography.h4,
+            modifier = Modifier.padding(8.dp)
+        )
+        LazyRow(
+            contentPadding = PaddingValues(8.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(serieDetail.credits.cast.take(10)) { actor ->
+                CastCard(actor = actor)
+            }
+        }
+
     }
 }

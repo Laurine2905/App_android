@@ -1,13 +1,16 @@
 package laurine.isis.fr
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
@@ -15,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,27 +33,42 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 
 @Composable
-fun Serie(classes: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
-    val classeHauteur = classes.heightSizeClass
+fun Serie(windowClass: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
     val series by viewModel.series.collectAsState()
     LaunchedEffect(true) {
         viewModel.seriesTendance()
     }
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 5.dp),
-            columns = GridCells.Fixed(2)
-        ) { items(series) { serie -> CardSerie(serie, navController) } }
+    when (windowClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 5.dp),
+                    columns = GridCells.Fixed(2)
+                ) { items(series) { serie -> CardSerie(serie, navController, windowClass) } }
+            }
+        }
+
+        else -> {
+           LazyHorizontalGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 5.dp),
+                    rows = GridCells.Fixed(2)
+                ) { items(series) { serie -> CardSerie(serie, navController, windowClass) } }
+
+        }
     }
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardSerie(serie: Serie, navController: NavController) {
+fun CardSerie(serie: Serie, navController: NavController, windowClass: WindowSizeClass) {
 
-        val navController = navController
+    val navController = navController
 
     Card(
         modifier = Modifier
@@ -59,34 +78,65 @@ fun CardSerie(serie: Serie, navController: NavController) {
             navController.navigate("serieDetail/${serie.id}")
         }
     ) {
-        Column (
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp))
-        {
-            Image(
-                painter = rememberImagePainter(
-                    data = "https://image.tmdb.org/t/p/w500${serie.poster_path}",
+        when (windowClass.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(16.dp)
+                )
+                {
+                    Image(
+                        painter = rememberImagePainter(
+                            data = "https://image.tmdb.org/t/p/w500${serie.poster_path}",
 
-                    ),
-                contentDescription = "${serie.id}",
-                modifier = Modifier
-                    .size(180.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Text(
-                text = "${serie.name}",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                modifier = Modifier
-                    .width(180.dp),
-            )
-            Text(
-                text = "${serie.first_air_date}"
-            )
+                            ),
+                        contentDescription = "${serie.id}",
+                        modifier = Modifier
+                            .size(180.dp)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                    TexteSerie(serie)
+                }
+            }
+            else -> {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Column {
+                        Image(
+                            painter = rememberImagePainter(
+                                data = "https://image.tmdb.org/t/p/w500${serie.poster_path}"
+                            ),
+                            contentDescription = "${serie.id}",
+                            modifier = Modifier
+                                .size(250.dp) // Ajustez la taille de l'image ici selon vos besoins
 
+                        )
+                    }
+                    Column {
+                        TexteSerie(serie)
+                    }
+                }
+
+            }
         }
     }
+
+
 }
 
+@Composable
+fun TexteSerie(serie: Serie) {
+    Text(
+        text = "${serie.name}",
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+        modifier = Modifier
+            .width(180.dp),
+    )
+    Text(
+        text = "${serie.first_air_date}"
+    )
+}
