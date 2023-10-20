@@ -111,18 +111,6 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel) {
             }
         }
 
-       /* if (filmDetail.credits.cast.isNotEmpty()) {
-            Text(text = "Têtes d'affiche :", fontWeight = FontWeight.Bold, style = typography.h4)
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(8.dp)
-            ) {
-                items(filmDetail.credits.cast.take(10)) { actor ->
-                    CastCard(actor = actor)
-                }
-            }
-        }*/
-
     }
 }
 

@@ -90,7 +90,7 @@ fun SerieDetailScreen(serieDetail: SerieDetails, viewModel: MainViewModel) {
                         fontStyle = FontStyle.Italic,
                         modifier = Modifier.padding(8.dp),
                         overflow = TextOverflow.Ellipsis,
-                        maxLines = Int.MAX_VALUE // Allow text to wrap to the next line
+                        maxLines = Int.MAX_VALUE // permet de pas couper les mots
                     )
 
                 }

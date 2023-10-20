@@ -89,6 +89,15 @@ class MainActivity : ComponentActivity() {
                                 SerieDetailScreen(serieDetail, viewModel)
                             }
                         }
+                        composable("personDetail/{personId}") { backStackEntry ->
+                            val personId =
+                                backStackEntry.arguments?.getString("personId")?.toIntOrNull()
+                            if (personId != null) {
+                                viewModel.personDetailbyID(personId)
+                                val personDetail by viewModel.detailperson.collectAsState()
+                                PersonDetailScreen(personDetail, viewModel)
+                            }
+                        }
                     }
                 }
             }

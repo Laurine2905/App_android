@@ -2,10 +2,17 @@ package laurine.isis.fr
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,8 +20,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 
 @Composable
 fun Persons(classes: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
@@ -33,13 +45,48 @@ fun Persons(classes: WindowSizeClass, navController: NavController, viewModel: M
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardPerson(person: Person, navController: NavController) {
-    MyCardPersons(
-        route = "acteurDetail/" + person.id,
-        chemin_img = person.profile_path,
-        titre = person.name,
-        navController = navController
-    )
+
+    val navController = navController
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp),
+        onClick = {
+            navController.navigate("personDetail/${person.id}")
+        }
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(16.dp)
+        )
+        {
+            androidx.compose.foundation.Image(
+
+                painter = if (person.profile_path != null) rememberImagePainter(
+
+                    data = "https://image.tmdb.org/t/p/w500${person.profile_path}",
+
+                    )
+                else painterResource(id = R.drawable.baseline_person_24),
+                contentDescription = person.name,
+                modifier = Modifier
+                    .size(180.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = person.name,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .width(180.dp),
+            )
+        }
+    }
 }
 

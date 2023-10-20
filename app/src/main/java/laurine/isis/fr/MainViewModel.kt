@@ -15,7 +15,7 @@ class MainViewModel : ViewModel() {
     val persons = MutableStateFlow<List<Person>>(listOf())
     val detailfilm = MutableStateFlow(FilmDetail())
     val detailserie = MutableStateFlow(SerieDetails())
-    val cast = MutableStateFlow(Cast())
+    val detailperson = MutableStateFlow(PersonDetail())
     val apikey = "2ab74ba6ba3af991e8495015b7df64d5"
 
     val service = Retrofit.Builder()
@@ -26,49 +26,55 @@ class MainViewModel : ViewModel() {
 
     fun searchMovies(motcle: String) {
         viewModelScope.launch {
-            movies.value = service.getFilmsParMotCle(apikey, motcle).results
+            movies.value = service.getFilmsParMotCle(apikey, motcle, "fr").results
         }
     }
 
     fun searchSeries(motcle: String) {
         viewModelScope.launch {
-            series.value = service.getSeriesParMotCle(apikey, motcle).results
+            series.value = service.getSeriesParMotCle(apikey, motcle, "fr").results
         }
     }
 
     fun searchPersons(motcle: String) {
         viewModelScope.launch {
-            persons.value = service.getPersonsParMotCle(apikey, motcle).results
+            persons.value = service.getPersonsParMotCle(apikey, motcle, "fr").results
         }
     }
 
     fun filmsTendance() {
         viewModelScope.launch {
-            movies.value = service.derniersFilms(apikey).results
+            movies.value = service.derniersFilms(apikey, "fr").results
         }
     }
 
     fun acteursTendance() {
         viewModelScope.launch {
-            persons.value = service.dernieresPersons(apikey).results
+            persons.value = service.dernieresPersons(apikey, "fr").results
         }
     }
 
     fun seriesTendance() {
         viewModelScope.launch {
-            series.value = service.dernieresSeries(apikey).results
+            series.value = service.dernieresSeries(apikey, "fr").results
         }
     }
 
     fun filmDetailbyID(id : Int){
         viewModelScope.launch {
-            detailfilm.value = service.getFilmDetails(id, apikey)
+            detailfilm.value = service.getFilmDetails(id, apikey, "fr")
         }
     }
 
     fun serieDetailbyID(id : Int){
         viewModelScope.launch {
-            detailserie.value = service.getSerieDetails(id, apikey)
+            detailserie.value = service.getSerieDetails(id, apikey, "fr")
+        }
+    }
+
+    fun personDetailbyID(id : Int){
+        viewModelScope.launch {
+            detailperson.value = service.getPersonDetails(id, apikey, "fr")
         }
     }
 }

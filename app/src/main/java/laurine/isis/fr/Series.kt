@@ -3,16 +3,21 @@ package laurine.isis.fr
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -46,83 +51,53 @@ fun Serie(windowClass: WindowSizeClass, navController: NavController, viewModel:
                         .fillMaxSize()
                         .padding(bottom = 5.dp),
                     columns = GridCells.Fixed(2)
-                ) { items(series) { serie -> CardSerie(serie, navController, windowClass) } }
+                ) {
+                    items(series) { serie -> CardSerie(serie, navController, windowClass) }
+                }
             }
         }
 
         else -> {
-           LazyHorizontalGrid(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 5.dp),
-                    rows = GridCells.Fixed(2)
-                ) { items(series) { serie -> CardSerie(serie, navController, windowClass) } }
-
+            LazyRow(
+                contentPadding = PaddingValues(8.dp),
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                items(series) { serie -> CardSerie(serie, navController, windowClass) }
+            }
         }
     }
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardSerie(serie: Serie, navController: NavController, windowClass: WindowSizeClass) {
-
     val navController = navController
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .width(180.dp)
             .padding(15.dp),
         onClick = {
             navController.navigate("serieDetail/${serie.id}")
         }
     ) {
-        when (windowClass.widthSizeClass) {
-            WindowWidthSizeClass.Compact -> {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp)
-                )
-                {
-                    Image(
-                        painter = rememberImagePainter(
-                            data = "https://image.tmdb.org/t/p/w500${serie.poster_path}",
-
-                            ),
-                        contentDescription = "${serie.id}",
-                        modifier = Modifier
-                            .size(180.dp)
-                            .align(Alignment.CenterHorizontally)
-                    )
-                    TexteSerie(serie)
-                }
-            }
-            else -> {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Column {
-                        Image(
-                            painter = rememberImagePainter(
-                                data = "https://image.tmdb.org/t/p/w500${serie.poster_path}"
-                            ),
-                            contentDescription = "${serie.id}",
-                            modifier = Modifier
-                                .size(250.dp) // Ajustez la taille de l'image ici selon vos besoins
-
-                        )
-                    }
-                    Column {
-                        TexteSerie(serie)
-                    }
-                }
-
-            }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(16.dp)
+        )
+        {
+            Image(
+                painter = rememberImagePainter(
+                    data = "https://image.tmdb.org/t/p/w500${serie.poster_path}",
+                ),
+                contentDescription = "${serie.id}",
+                modifier = Modifier
+                    .size(100.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            TexteSerie(serie)
         }
     }
-
-
 }
 
 @Composable
