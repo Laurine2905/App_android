@@ -39,13 +39,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.navigation.NavController
 import laurine.isis.fr.CastCard
 import laurine.isis.fr.FilmDetail
 import laurine.isis.fr.MainViewModel
 import laurine.isis.fr.SerieDetails
 
 @Composable
-fun SerieDetailScreen(serieDetail: SerieDetails, viewModel: MainViewModel) {
+fun SerieDetailScreen(serieDetail: SerieDetails, viewModel: MainViewModel, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -109,7 +110,7 @@ fun SerieDetailScreen(serieDetail: SerieDetails, viewModel: MainViewModel) {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(serieDetail.credits.cast.take(10)) { actor ->
-                CastCard(actor = actor)
+                CastCard(actor = actor, navController)
             }
         }
 

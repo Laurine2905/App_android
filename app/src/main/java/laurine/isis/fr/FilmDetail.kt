@@ -41,9 +41,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.navigation.NavController
 
 @Composable
-fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel) {
+fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -107,7 +108,7 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel) {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(filmDetail.credits.cast.take(10)) { actor ->
-                CastCard(actor = actor)
+                CastCard(actor = actor, navController)
             }
         }
 
@@ -116,13 +117,13 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CastCard(actor: Cast) {
+fun CastCard(actor: Cast , navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(15.dp),
         onClick = {
-
+            navController.navigate("personDetail/${actor.id}")
         }
     ) {
         Column(

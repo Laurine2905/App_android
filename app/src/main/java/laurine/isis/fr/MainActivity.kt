@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                             if (filmId != null) {
                                 viewModel.filmDetailbyID(filmId)
                                 val filmDetail by viewModel.detailfilm.collectAsState()
-                                FilmDetailScreen(filmDetail, viewModel)
+                                FilmDetailScreen(filmDetail, viewModel, navController)
                             }
                         }
                         composable("serieDetail/{serieId}") { backStackEntry ->
@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity() {
                             if (serieId != null) {
                                 viewModel.serieDetailbyID(serieId)
                                 val serieDetail by viewModel.detailserie.collectAsState()
-                                SerieDetailScreen(serieDetail, viewModel)
+                                SerieDetailScreen(serieDetail, viewModel, navController)
                             }
                         }
                         composable("personDetail/{personId}") { backStackEntry ->
