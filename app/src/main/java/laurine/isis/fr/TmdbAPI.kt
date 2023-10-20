@@ -25,4 +25,9 @@ interface TmdbAPI {
 
     @GET("movie/{movie_id}?append_to_response=credits")
     suspend fun getFilmDetails(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String ): FilmDetail
+
+    @GET("tv/{serie_id}?append_to_response=credits")
+    suspend fun getSerieDetails(@Path("serie_id") serieId: Int, @Query("api_key") apiKey: String ): SerieDetails
+
+
 }

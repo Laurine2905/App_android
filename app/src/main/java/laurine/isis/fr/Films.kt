@@ -48,9 +48,6 @@ fun Film(classes: WindowSizeClass, navController: NavController, viewModel: Main
 @Composable
 fun CardFilm(film: Movie, navController: NavController) {
 
-    val chemin_img = film.poster_path
-    val titre = film.title
-    val date_sortie = film.release_date
     val navController = navController
 
    Card(
@@ -67,16 +64,16 @@ fun CardFilm(film: Movie, navController: NavController) {
         {
             androidx.compose.foundation.Image(
                 painter = rememberImagePainter(
-                    data = "https://image.tmdb.org/t/p/w500$chemin_img",
+                    data = "https://image.tmdb.org/t/p/w500${film.poster_path}",
 
                     ),
-                contentDescription = titre,
+                contentDescription = "${film.id}",
                 modifier = Modifier
                     .size(180.dp)
                     .align(Alignment.CenterHorizontally)
             )
             Text(
-                text = titre,
+                text = "${film.title}",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                 overflow = TextOverflow.Ellipsis,
@@ -85,7 +82,7 @@ fun CardFilm(film: Movie, navController: NavController) {
                     .width(180.dp),
             )
             Text(
-                text = date_sortie
+                text = "${film.release_date}"
             )
 
         }

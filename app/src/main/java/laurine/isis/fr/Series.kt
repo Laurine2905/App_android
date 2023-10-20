@@ -1,11 +1,19 @@
 package laurine.isis.fr
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,8 +21,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 
 @Composable
 fun Serie(classes: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
@@ -33,14 +45,48 @@ fun Serie(classes: WindowSizeClass, navController: NavController, viewModel: Mai
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardSerie(serie: Serie, navController: NavController) {
-    MyCard(
-        route = "serieDetail/" + serie.id,
-        chemin_img = serie.poster_path,
-        titre = serie.name,
-        date_sortie = serie.first_air_date,
-        navController = navController
-    )
+
+        val navController = navController
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp),
+        onClick = {
+            navController.navigate("serieDetail/${serie.id}")
+        }
+    ) {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(16.dp))
+        {
+            Image(
+                painter = rememberImagePainter(
+                    data = "https://image.tmdb.org/t/p/w500${serie.poster_path}",
+
+                    ),
+                contentDescription = "${serie.id}",
+                modifier = Modifier
+                    .size(180.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "${serie.name}",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .width(180.dp),
+            )
+            Text(
+                text = "${serie.first_air_date}"
+            )
+
+        }
+    }
 }
 

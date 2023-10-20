@@ -1,6 +1,7 @@
 package laurine.isis.fr
 
 import BottomAppBarExample
+import SerieDetailScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -73,17 +74,19 @@ class MainActivity : ComponentActivity() {
                         composable("filmDetail/{filmId}") { backStackEntry ->
                             val filmId =
                                 backStackEntry.arguments?.getString("filmId")?.toIntOrNull()
-
-                            // Vérifiez si filmId n'est pas nul
                             if (filmId != null) {
-                                // Appelez votre fonction dans le ViewModel pour obtenir les détails du film par son ID
                                 viewModel.filmDetailbyID(filmId)
-
-                                // Observez les détails du film à partir de votre ViewModel
                                 val filmDetail by viewModel.detailfilm.collectAsState()
-
-                                // Affichez les détails du film dans votre interface utilisateur
-                                FilmDetailScreen(filmDetail)
+                                FilmDetailScreen(filmDetail, viewModel)
+                            }
+                        }
+                        composable("serieDetail/{serieId}") { backStackEntry ->
+                            val serieId =
+                                backStackEntry.arguments?.getString("serieId")?.toIntOrNull()
+                            if (serieId != null) {
+                                viewModel.serieDetailbyID(serieId)
+                                val serieDetail by viewModel.detailserie.collectAsState()
+                                SerieDetailScreen(serieDetail, viewModel)
                             }
                         }
                     }
