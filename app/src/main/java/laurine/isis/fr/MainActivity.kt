@@ -71,6 +71,15 @@ class MainActivity : ComponentActivity() {
                         composable("film") {
                             BottomAppBarExample(windowSizeClass, navController, viewModel)
                         }
+                        composable("filmscreen") {
+                            Film(windowSizeClass, navController, viewModel)
+                        }
+                        composable("seriescreen") {
+                            Serie(windowSizeClass, navController, viewModel)
+                        }
+                        composable("personscreen") {
+                            Persons(windowSizeClass, navController, viewModel)
+                        }
                         composable("filmDetail/{filmId}") { backStackEntry ->
                             val filmId =
                                 backStackEntry.arguments?.getString("filmId")?.toIntOrNull()

@@ -88,7 +88,7 @@ fun CardFilm(film: Movie, navController: NavController) {
                     ),
                 contentDescription = "${film.id}",
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(180.dp)
                     .align(Alignment.CenterHorizontally)
             )
             Text(
