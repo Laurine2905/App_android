@@ -1,5 +1,6 @@
 package laurine.isis.fr
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -34,33 +35,46 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 
 @Composable
+// Fonction pour afficher une liste de personnes basée sur la classe de taille de la fenêtre
 fun Persons(windowClass: WindowSizeClass, navController: NavController, viewModel: MainViewModel) {
+    // Récupère l'état actuel des personnes à partir du ViewModel
     val persons by viewModel.persons.collectAsState()
+
+    // Effect lancé lorsque le composant est créé
     LaunchedEffect(true) {
+        // Charge les acteurs tendances
         viewModel.acteursTendance()
     }
+
+    // juster l'affichage en fonction de la taille de la fenêtre
     when (windowClass.widthSizeClass) {
+        // Si la fenêtre est de taille compacte
         WindowWidthSizeClass.Compact -> {
+            //LazyVerticalGrid -> afficher les personnes par 2 en largeur
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 LazyVerticalGrid(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 5.dp),
-                    columns = GridCells.Fixed(2)
-                ) { items(persons) { person -> CardPerson(person, navController) } }
+                        .fillMaxSize()  // Occupe toute la taille disponible de l'écran
+                        .padding(bottom = 5.dp),  // Ajoute des marges en bas
+                    columns = GridCells.Fixed(2)  // Affiche 2 colonnes dans la grille
+                ) {
+                    items(persons) { person -> CardPerson(person, navController) }
+                }
             }
         }
-
+        // Si la fenêtre n'est pas de taille compacte
         else -> {
+            // Utilisation d'une liste horizontale défilante (LazyRow)
             LazyRow(
-                contentPadding = PaddingValues(8.dp),
-                modifier = Modifier.fillMaxHeight()
+                contentPadding = PaddingValues(8.dp),  // Ajoute des marges autour des éléments dans la liste
+                modifier = Modifier.fillMaxHeight()  // Occupe toute la hauteur disponible
             ) {
                 items(persons) { person -> CardPerson(person, navController) }
             }
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,37 +85,38 @@ fun CardPerson(person: Person, navController: NavController) {
             .fillMaxWidth()
             .padding(15.dp),
         onClick = {
+            // naviguer vers l'écran de détails de la personne
             navController.navigate("personDetail/${person.id}")
         }
     ) {
+        // Colonnes alignées horizontalement au centre dans la carte
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(16.dp)
-        )
-        {
-            androidx.compose.foundation.Image(
-
-                painter = if (person.profile_path != null) rememberImagePainter(
-
-                    data = "https://image.tmdb.org/t/p/w500${person.profile_path}",
-
-                    )
-                else painterResource(id = R.drawable.baseline_person_24),
+        ) {
+            // Affiche l'image de la personne s'il y en a une, sinon affiche une icône par défaut
+            Image(
+                painter = if (person.profile_path != null) {
+                    rememberImagePainter(data = "https://image.tmdb.org/t/p/w500${person.profile_path}")
+                } else {
+                    // Sinon, utilise une icône par défaut
+                    painterResource(id = R.drawable.baseline_person_24)
+                },
                 contentDescription = person.name,
                 modifier = Modifier
                     .size(100.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally)  // Centre l'image horizontalement
             )
+            // Affiche le nom
             Text(
                 text = person.name,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,  // Affiche ... si le texte est trop long
+                maxLines = 1,  // Limite le texte à une seule ligne
                 modifier = Modifier
-                    .width(180.dp),
+                    .width(180.dp),  // Limite la largeur du texte à 180dp
             )
         }
     }
 }
-

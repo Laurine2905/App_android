@@ -47,11 +47,14 @@ import androidx.navigation.NavController
 fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navController: NavController) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(enabled = true, state = rememberScrollState())
+            .fillMaxSize()  // Occupe toute la taille disponible de l'écran
+            .padding(16.dp)  // Ajoute des marges autour de la colonne
+            .verticalScroll(enabled = true, state = rememberScrollState())  // Permet le défilement vertical
     ) {
+        // Affiche le titre du film -> gras et grande taille
         Text("${filmDetail.title}", fontWeight = FontWeight.Bold, style = typography.h4)
+
+        // Affiche l'image du film
         Image(
             painter = rememberImagePainter(
                 data = "https://image.tmdb.org/t/p/w500${filmDetail.backdrop_path}",
@@ -59,9 +62,12 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
             contentDescription = filmDetail.title,
             modifier = Modifier
                 .fillMaxWidth()
-                .size(180.dp) // You can adjust the height as needed
+                .size(180.dp)  // Définit la taille de l'image
         )
+
+        // Affiche une ligne vide pour l'espacement
         Text("")
+
         Row() {
             Column {
                 Image(
@@ -71,10 +77,11 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
                     contentDescription = filmDetail.title,
                     modifier = Modifier
                         .size(180.dp)
-                        .align(Alignment.CenterHorizontally)
+                        .align(Alignment.CenterHorizontally)  // Centre l'image horizontalement
                 )
             }
             Column {
+                // Affiche la date de sortie du film
                 Row {
                     Text(
                         text = "${(filmDetail.release_date)}",
@@ -83,6 +90,8 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
                         maxLines = 1
                     )
                 }
+                // Affiche les genres du film
+                // joinToString = créer une chaîne de caractères à partir d'une liste en insérant une virgule suivie d'un espace entre chaque élément de la liste
                 Row {
                     Text(
                         text = "Genres: ${filmDetail.genres.joinToString(", ") { it.name }}",
@@ -94,7 +103,10 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
                 }
             }
         }
+
         Text(text = "Synopsis :", fontWeight = FontWeight.Bold, style = typography.h4)
+
+        // Affiche la description du film avec un alignement justifié
         Text(text = "${filmDetail.overview}", textAlign = TextAlign.Justify)
 
         Text(
@@ -103,6 +115,8 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
             style = typography.h4,
             modifier = Modifier.padding(8.dp)
         )
+
+        // Affiche une liste horizontale (LazyRow) des 10 premiers acteurs principaux du film
         LazyRow(
             contentPadding = PaddingValues(8.dp),
             modifier = Modifier.fillMaxWidth()
@@ -111,9 +125,9 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
                 CastCard(actor = actor, navController)
             }
         }
-
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -123,37 +137,40 @@ fun CastCard(actor: Cast , navController: NavController) {
             .fillMaxWidth()
             .padding(15.dp),
         onClick = {
+            // naviguer vers l'écran de détails de l'acteur
             navController.navigate("personDetail/${actor.id}")
         }
     ) {
+        // Colonnes alignées horizontalement au centre dans la carte
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp)  // Ajoute des marges à l'intérieur de la colonne
         )
         {
-            androidx.compose.foundation.Image(
+            // Affiche l'image de l'acteur
+            Image(
                 painter = rememberImagePainter(
                     data = "https://image.tmdb.org/t/p/w500${actor.profile_path}",
-
-                    ),
+                ),
                 contentDescription = "image acteur",
                 modifier = Modifier
                     .size(180.dp)
                     .align(Alignment.CenterHorizontally)
             )
+            // Affiche le nom de l'acteur
             Text(
                 text = actor.name,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,  // Affiche ... si le texte est trop long
+                maxLines = 1,  // Limite le texte à une seule ligne
                 modifier = Modifier
-                    .width(180.dp),
+                    .width(180.dp),  // Limite la largeur du texte à 180dp
             )
+            // Affiche le personnage joué par l'acteur
             Text(
                 text = actor.character
             )
-
         }
     }
 }

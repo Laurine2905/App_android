@@ -18,8 +18,9 @@ class MainViewModel : ViewModel() {
     val detailperson = MutableStateFlow(PersonDetail())
     val apikey = "2ab74ba6ba3af991e8495015b7df64d5"
 
+    // Crée une instance du service Retrofit pour effectuer des appels à l'API The Movie Database (TMDb)
     val service = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/3/")
+        .baseUrl("https://api.themoviedb.org/3/")  // Définit l'URL de base de l'API
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
         .create(TmdbAPI::class.java)
@@ -29,6 +30,7 @@ class MainViewModel : ViewModel() {
             movies.value = service.getFilmsParMotCle(apikey, motcle, "fr").results
         }
     }
+
 
     fun searchSeries(motcle: String) {
         viewModelScope.launch {

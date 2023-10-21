@@ -52,46 +52,65 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Définit le contenu de l'activité avec Jetpack Compose
         setContent {
+            // Récupère la classe de taille de la fenêtre (WindowSizeClass)
             val windowSizeClass = calculateWindowSizeClass(this)
+
+            // Initialise le NavController pour gérer la navigation entre les écrans
             val navController = rememberNavController()
+
+            // Initialise le ViewModel pour gérer les données et la logique de l'application
             val viewModel: MainViewModel by viewModels()
 
+            // Définit le thème global de l'application
             MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize()) {
-
+                    // Configurer la navigation avec Jetpack Compose Navigation
                     NavHost(
                         navController = navController,
-                        startDestination = "image"
+                        startDestination = "image"  // Écran de départ de l'application
                     ) {
+                        // Définit les écrans de l'application et leurs composants associés
                         composable("image") {
+                            // Affiche l'écran principal avec l'ensemble des films
                             Screen(windowSizeClass, navController)
                         }
                         composable("film") {
+                            // Affiche l'écran de liste des films
                             BottomAppBarExample(windowSizeClass, navController, viewModel)
                         }
                         composable("filmscreen") {
+                            // Affiche l'écran des films avec la grille ou la liste défilante
                             Film(windowSizeClass, navController, viewModel)
                         }
                         composable("seriescreen") {
+                            // Affiche l'écran des séries avec la grille ou la liste défilante
                             Serie(windowSizeClass, navController, viewModel)
                         }
                         composable("personscreen") {
+                            // Affiche l'écran des personnes avec la grille ou la liste défilante
                             Persons(windowSizeClass, navController, viewModel)
                         }
                         composable("filmDetail/{filmId}") { backStackEntry ->
-                            val filmId =
-                                backStackEntry.arguments?.getString("filmId")?.toIntOrNull()
+                            // Récupère l'ID du film de l'argument passé à partir du BackStackEntry
+                            val filmId = backStackEntry.arguments?.getString("filmId")?.toIntOrNull()
+
+                            // Vérifie si l'ID du film est valide (non null)
                             if (filmId != null) {
+                                // Appelle la fonction pour récupérer les détails du film par son ID
                                 viewModel.filmDetailbyID(filmId)
+
+                                // Récupère l'état actuel des détails du film
                                 val filmDetail by viewModel.detailfilm.collectAsState()
+
+                                // Affiche l'écran de détails du film
                                 FilmDetailScreen(filmDetail, viewModel, navController)
                             }
                         }
                         composable("serieDetail/{serieId}") { backStackEntry ->
-                            val serieId =
-                                backStackEntry.arguments?.getString("serieId")?.toIntOrNull()
+                            // Affiche les détails d'une série en fonction de son ID
+                            val serieId = backStackEntry.arguments?.getString("serieId")?.toIntOrNull()
                             if (serieId != null) {
                                 viewModel.serieDetailbyID(serieId)
                                 val serieDetail by viewModel.detailserie.collectAsState()
@@ -99,8 +118,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         composable("personDetail/{personId}") { backStackEntry ->
-                            val personId =
-                                backStackEntry.arguments?.getString("personId")?.toIntOrNull()
+                            // Affiche les détails d'une personne en fonction de son ID
+                            val personId = backStackEntry.arguments?.getString("personId")?.toIntOrNull()
                             if (personId != null) {
                                 viewModel.personDetailbyID(personId)
                                 val personDetail by viewModel.detailperson.collectAsState()
@@ -112,6 +131,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
 
     @Composable

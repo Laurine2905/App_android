@@ -291,23 +291,24 @@ fun BottomAppBarExample(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.Start
             ) {
-            if (searchVisible) {
-                // Champ de texte pour la recherche
-                TextField(
-                    value = searchQuery,
-                    onValueChange = {
-                        searchQuery = it
-                        // Appeler votre fonction de recherche ici avec la query
-                        when (value) {
-                            "series" -> viewModel.searchSeries(searchQuery)
-                            "films" -> viewModel.searchMovies(searchQuery)
-                            "acteurs" -> viewModel.searchPersons(searchQuery)
-                        }
-                    },
-                    placeholder = { Text("Rechercher") },
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                if (searchVisible) {
+                    // Champ de texte pour la recherche
+                    TextField(
+                        value = searchQuery,
+                        onValueChange = {
+                            searchQuery = it
+                            // Appeler votre fonction de recherche ici avec la query
+                            when (value) {
+                                "series" -> viewModel.searchSeries(searchQuery)
+                                "films" -> viewModel.searchMovies(searchQuery)
+                                "acteurs" -> viewModel.searchPersons(searchQuery)
+                            }
+                        },
+                        placeholder = { Text("Rechercher") },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
         }
     }
-}}
+}
