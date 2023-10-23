@@ -44,15 +44,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.navigation.NavController
 
 @Composable
-fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navController: NavController) {
+fun FilmDetailScreen(
+    filmDetail: FilmDetail,
+    viewModel: MainViewModel,
+    navController: NavController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()  // Occupe toute la taille disponible de l'écran
-            .padding(16.dp)  // Ajoute des marges autour de la colonne
-            .verticalScroll(enabled = true, state = rememberScrollState())  // Permet le défilement vertical
+
+            .verticalScroll(
+                enabled = true,
+                state = rememberScrollState()
+            )  // Permet le défilement vertical
     ) {
-        // Affiche le titre du film -> gras et grande taille
-        Text("${filmDetail.title}", fontWeight = FontWeight.Bold, style = typography.h4)
+
 
         // Affiche l'image du film
         Image(
@@ -81,6 +87,10 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
                 )
             }
             Column {
+                Row {
+                    // Affiche le titre du film -> gras et grande taille
+                    Text("${filmDetail.title}", fontWeight = FontWeight.Bold, style = typography.h4)
+                }
                 // Affiche la date de sortie du film
                 Row {
                     Text(
@@ -131,7 +141,7 @@ fun FilmDetailScreen(filmDetail: FilmDetail, viewModel: MainViewModel, navContro
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CastCard(actor: Cast , navController: NavController) {
+fun CastCard(actor: Cast, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

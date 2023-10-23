@@ -104,7 +104,7 @@ fun CardPerson(person: Person, navController: NavController) {
                 },
                 contentDescription = person.name,
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(180.dp)
                     .align(Alignment.CenterHorizontally)  // Centre l'image horizontalement
             )
             // Affiche le nom

@@ -26,31 +26,37 @@ fun PersonDetailScreen(personDetail: PersonDetail, viewModel: MainViewModel) {
             .padding(16.dp)
             .verticalScroll(enabled = true, state = rememberScrollState())
     ) {
-        Image(
-            painter = rememberImagePainter(
-                data = "https://image.tmdb.org/t/p/w500${personDetail.profile_path}",
-            ),
-            contentDescription = personDetail.name,
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(180.dp) // You can adjust the height as needed
-        )
         Row {
-            Text(
-                "${personDetail.name}",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.h4
-            )
-        }
-        Row {
-            Text(
-                "Né le ${personDetail.birthday}"
-            )
-        }
-        Row {
-            Text(
-                "à ${personDetail.place_of_birth}"
-            )
+            Column {
+                Image(
+                    painter = rememberImagePainter(
+                        data = "https://image.tmdb.org/t/p/w500${personDetail.profile_path}",
+                    ),
+                    contentDescription = personDetail.name,
+                    modifier = Modifier
+                        .size(180.dp) // You can adjust the height as needed
+                )
+            }
+            Column {
+
+                Row {
+                    Text(
+                        "${personDetail.name}",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.h4
+                    )
+                }
+                Row {
+                    Text(
+                        "Né le ${personDetail.birthday}"
+                    )
+                }
+                Row {
+                    Text(
+                        "à ${personDetail.place_of_birth}"
+                    )
+                }
+            }
         }
         Text(
             text = "Biographie :",
